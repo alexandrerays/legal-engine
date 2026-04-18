@@ -41,9 +41,23 @@ streamlit run app/ui.py
 ```
 
 From the sidebar:
-1. Click **Download sample corpus** to fetch public legal PDFs
+1. Place PDFs in `data/raw/` (see [Corpus](#corpus) below)
 2. Click **Build index** to parse, chunk, and index
 3. Ask questions in the main panel
+
+## Corpus
+
+The corpus consists of 5 recent U.S. Supreme Court slip opinions randomly selected from the [2025 Term opinions page](https://www.supremecourt.gov/opinions/slipopinion/25):
+
+| Case | PDF |
+|------|-----|
+| No. 24-813 | [24-813_3e04.pdf](https://www.supremecourt.gov/opinions/25pdf/24-813_3e04.pdf) |
+| No. 24-539 | [24-539new_hfci.pdf](https://www.supremecourt.gov/opinions/25pdf/24-539new_hfci.pdf) |
+| No. 24-1056 | [24-1056_qn12.pdf](https://www.supremecourt.gov/opinions/25pdf/24-1056_qn12.pdf) |
+| No. 24-171 | [24-171_new_3dq3.pdf](https://www.supremecourt.gov/opinions/25pdf/24-171_new_3dq3.pdf) |
+| No. 25-297 | [25-297_bqm2.pdf](https://www.supremecourt.gov/opinions/25pdf/25-297_bqm2.pdf) |
+
+These are public-domain documents. Place them in `data/raw/` before building the index.
 
 ### Running evaluation
 
