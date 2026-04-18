@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.env
+data/indexes/
+data/processed/
+data/raw/
+dist/
+build/
+.streamlit/
+.pytest_cache/
+.DS_Store
+.python-version
