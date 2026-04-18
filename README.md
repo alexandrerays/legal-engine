@@ -23,14 +23,24 @@ PDF corpus ──▶ LlamaIndex parser ──▶ HierarchicalNodeParser ──�
 
 ## Setup
 
+**macOS / Linux:**
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# Set your OpenAI API key
 cp .env.example .env
-# Edit .env with your key
+# Edit .env with your OpenAI API key
+```
+
+**Windows:**
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+
+copy .env.example .env
+# Edit .env with your OpenAI API key
 ```
 
 ## Usage
