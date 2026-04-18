@@ -13,7 +13,7 @@ from app.utils import init_llama_settings
 from src.citations import format_citations_markdown
 from src.chunking import build_hierarchy, get_leaves
 from src.indexing import build_index, load_index
-from src.ingest import download_corpus, run_ingestion
+from src.ingest import run_ingestion
 from src.qa import answer_question
 from src.retrieval import get_retriever, retrieve
 
@@ -38,12 +38,6 @@ with st.sidebar:
     st.metric("PDFs loaded", len(pdf_files))
     st.metric("Index ready", "Yes" if index_exists else "No")
 
-    if st.button("Download sample corpus"):
-        with st.spinner("Downloading PDFs..."):
-            paths = download_corpus()
-        st.success(f"Downloaded {len(paths)} files")
-        st.rerun()
-
     if pdf_files and st.button("Build index"):
         with st.spinner("Parsing, chunking, and indexing..."):
             docs, metas = run_ingestion()
@@ -60,7 +54,7 @@ with st.sidebar:
 # --- Main panel ---
 if not index_exists:
     st.info(
-        "No index found. Use the sidebar to download the sample corpus and build the index."
+        "No index found. Add PDFs to data/raw/ and click 'Build index' in the sidebar."
     )
     st.stop()
 
