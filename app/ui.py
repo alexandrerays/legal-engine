@@ -60,7 +60,7 @@ if not index_exists:
 
 question = st.text_input(
     "Ask a legal research question:",
-    placeholder="e.g. What are the four factors of fair use?",
+    placeholder="e.g. Is knowledge that a service will be used for infringement sufficient to establish liability?",
 )
 
 if question:
