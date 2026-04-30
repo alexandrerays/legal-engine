@@ -2,6 +2,8 @@
 
 A RAG-powered legal research prototype that ingests legal PDFs, builds a hierarchical chunk index, and answers questions with grounded, cited answers via a Streamlit UI.
 
+![Demo](assets/screenshot.png)
+
 ## Architecture
 
 ![Architecture diagram](assets/arquitecture.png)
@@ -51,6 +53,11 @@ From the sidebar:
 1. Place PDFs in `data/raw/` (see [Corpus](#corpus) below)
 2. Click **Build index** to parse, chunk, and index
 3. Ask questions in the main panel
+
+**Sample questions:**
+1. What is required to establish contributory copyright liability according to the Court?
+2. Is knowledge that a service will be used for infringement sufficient to establish liability?
+3. What are the four factors considered in a fair use analysis?
 
 ## Corpus
 
