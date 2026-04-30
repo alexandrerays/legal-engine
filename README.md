@@ -4,22 +4,19 @@ A RAG-powered legal research prototype that ingests legal PDFs, builds a hierarc
 
 ## Architecture
 
-```
-PDF corpus ──▶ LlamaIndex parser ──▶ HierarchicalNodeParser ──▶ FAISS index
-                                         (parent + child)          │
-                                                                   ▼
-                              Streamlit UI ◀── OpenAI LLM ◀── AutoMergingRetriever
-                                   │
-                            Answer + citations
-```
+![Architecture diagram](assets/arquitecture.png)
 
 **Key components:**
-- **Ingestion**: `pypdf`-based PDF parsing via LlamaIndex `SimpleDirectoryReader`, preserving page numbers and source metadata.
-- **Chunking**: Two-level hierarchy using `HierarchicalNodeParser` — larger parent chunks (2048 tokens) and smaller child chunks (512 tokens).
-- **Indexing**: FAISS-backed vector index over leaf chunks, with all nodes stored in a `SimpleDocumentStore` for parent lookup.
-- **Retrieval**: `AutoMergingRetriever` starts from leaf chunks and merges into parent context when enough siblings match, providing broader context without sacrificing precision.
-- **Generation**: OpenAI GPT-4o-mini with a structured prompt charter that enforces grounding, citation, and failure behavior.
-- **UI**: Streamlit app with corpus management, question input, answer display, citation inspector, and retrieval score viewer.
+- **Ingestion** — Legal PDFs (U.S. Supreme Court opinions) are parsed via LlamaIndex `SimpleDirectoryReader` with `pypdf`, preserving page numbers and source metadata.
+- **Hierarchical Chunking** — `HierarchicalNodeParser` splits documents into a two-level tree: parent chunks (~2048 tokens) and child chunks (~512 tokens). Parent chunks capture full sections; child chunks enable precise retrieval.
+- **Vector Index (FAISS)** — Child chunks are embedded and stored in a FAISS index for vector similarity search. Embeddings are generated via OpenAI.
+- **Document Store (`SimpleDocumentStore`)** — All source nodes (both parent and child) are persisted so the retriever can look up parent context on demand.
+- **Retriever (`AutoMergingRetriever`)** — Queries hit the FAISS index to find relevant child chunks. When enough siblings from the same parent match (`simple_ratio_thresh=0.4`), the retriever merges them into the parent chunk for broader context.
+- **LLM (OpenAI GPT-4o-mini)** — The retrieved context is sent to the LLM along with a structured prompt charter (`app/prompts.py` v1.0) that enforces grounded answers, inline citations, confidence scoring, and explicit abstention when evidence is insufficient.
+- **Answer Generator** — Produces a JSON response with `answer_text`, bracketed citations (`[1]`, `[2]`), and a confidence level. Each citation carries the document title, document ID, page number, node ID, and a supporting excerpt.
+- **Streamlit UI** — The frontend provides corpus management, question input, answer display with inline citations, and a retrieval context inspector for verifying grounding.
+- **Evaluation Harness** (`src/evaluation.py`) — Runs hand-crafted test cases covering answerable questions (checking citations and keywords) and unanswerable questions (checking that the system declines with `insufficient` confidence).
+- **Prompt Charter** (`app/prompts.py` v1.0) — Centralized, versioned prompt definitions that enforce grounding rules, citation format, confidence levels, failure modes, and a legal disclaimer.
 
 ## Setup
 
